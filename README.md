@@ -21,7 +21,7 @@ A full-stack, premium MERN (MongoDB, Express, React, Node.js) web application fo
 - MongoDB instance (local or Atlas)
 
 ### 1. Clone the repository and install dependencies
-\`\`\`bash
+
 # Install backend dependencies
 cd server
 npm install
