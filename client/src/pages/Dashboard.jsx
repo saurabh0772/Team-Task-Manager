@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { CalendarClock, CheckCircle2, CircleDashed, ListTodo } from 'lucide-react';
+import { CalendarClock, CheckCircle2, CircleDashed, ListTodo, FolderPlus } from 'lucide-react';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import api from '../api/axios';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [newProject, setNewProject] = useState({ title: '', description: '' });
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -22,6 +30,18 @@ export default function Dashboard() {
     fetchDashboard();
   }, []);
 
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.post('/projects', newProject);
+      setOpen(false);
+      setNewProject({ title: '', description: '' });
+      navigate(`/projects/${res.data._id}`);
+    } catch (error) {
+      console.error('Failed to create project', error);
+    }
+  };
+
   if (loading) return <div>Loading dashboard...</div>;
   if (!data) return <div>Failed to load dashboard</div>;
 
@@ -33,8 +53,39 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-      
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button><FolderPlus className="mr-2 h-4 w-4" /> New Project</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <form onSubmit={handleCreate}>
+              <DialogHeader>
+                <DialogTitle>Create Project</DialogTitle>
+                <DialogDescription>
+                  Add a new project to start managing tasks with your team.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="title">Title</Label>
+                  <Input id="title" value={newProject.title} onChange={(e) => setNewProject({ ...newProject, title: e.target.value })} required />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Input id="description" value={newProject.description} onChange={(e) => setNewProject({ ...newProject, description: e.target.value })} />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Create Project</Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -85,7 +136,7 @@ export default function Dashboard() {
                 <BarChart data={chartData}>
                   <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value}`} />
-                  <Tooltip cursor={{fill: 'transparent'}} />
+                  <Tooltip cursor={{ fill: 'transparent' }} />
                   <Bar dataKey="count" radius={[4, 4, 0, 0]}>
                     {chartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
