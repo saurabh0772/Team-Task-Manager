@@ -88,4 +88,8 @@ The application will be available at \`http://localhost:5173\`.
 7. *(Note: A `vercel.json` file is already included in the client folder to ensure React Router works correctly after deployment).*
 
 ## Screenshots
-*(Add screenshots here)*
+![Login Page](image.png)
+![SignUp Page](image-1.png)
+![Home Page](image-2.png)
+![Projects](image-3.png)
+![](image-4.png)
