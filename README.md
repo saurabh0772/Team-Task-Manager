@@ -52,8 +52,6 @@ npm run dev
 
 # Start frontend (from /client)
 npm run dev
-\`\`\`
-The application will be available at \`http://localhost:5173\`.
 
 ## API Documentation
 - \`POST /api/auth/register\`: Register a new user.
