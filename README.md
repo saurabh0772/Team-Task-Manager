@@ -89,7 +89,6 @@ The application will be available at \`http://localhost:5173\`.
 
 ## Screenshots
 ![Login Page](image.png)
-![SignUp Page](image-1.png)
 ![Home Page](image-2.png)
 ![Projects](image-3.png)
 ![](image-4.png)
