@@ -64,28 +64,6 @@ The application will be available at \`http://localhost:5173\`.
 - \`GET /api/tasks/project/:id\`: Get tasks for a specific project.
 - \`POST /api/tasks\`: Create a new task in a project.
 
-## Deployment Guide
-
-### 1. Backend Deployment (Render)
-1. Go to [Render](https://render.com/) and create a new **Web Service**.
-2. Connect your GitHub repository.
-3. Set the **Root Directory** to `server`.
-4. Build Command: `npm install`
-5. Start Command: `npm start`
-6. Add the following **Environment Variables** in the Render dashboard:
-   - `MONGO_URI`: Your MongoDB connection string.
-   - `JWT_SECRET`: A secure random string for JWT.
-   - `CLIENT_URL`: The URL of your Vercel frontend (e.g., `https://your-frontend.vercel.app`). *Make sure there is no trailing slash.*
-
-### 2. Frontend Deployment (Vercel)
-1. Go to [Vercel](https://vercel.com/) and create a new **Project**.
-2. Import your GitHub repository.
-3. Set the **Root Directory** to `client`. Vercel will automatically detect Vite.
-4. Build Command: `npm run build`
-5. Output Directory: `dist`
-6. Add the following **Environment Variable** in the Vercel dashboard:
-   - `VITE_API_URL`: The URL of your deployed Render backend with `/api` at the end (e.g., `https://your-backend.onrender.com/api`).
-7. *(Note: A `vercel.json` file is already included in the client folder to ensure React Router works correctly after deployment).*
 
 ## Screenshots
 ![Login Page](image.png)
